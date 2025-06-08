@@ -4,7 +4,19 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$language = "sv"; // Change to your desired language code
+// Process get request to fetch audio files for a specific language
+if (!isset($_GET['lang']) || empty($_GET['lang'])) {
+    echo "Language parameter is missing or empty.";
+    exit;
+}
+
+// Process get request to fetch audio files for a specific language
+if (!isset($_GET['pass']) || empty($_GET['pass']) && $_GET['pass'] !== 'add_a_password') {
+    echo "Password parameter is missing or empty.";
+    exit;
+}
+
+$language = $_GET['lang'];
 
 // Get the latest words from the database for the specified language
 $db = new PDO('sqlite:/opt/lampp/htdocs/kuku/kuku/data/kuku_db.sqlite');
@@ -40,7 +52,8 @@ $new_words = array_diff($latest_words, $existing_words);
 foreach ($new_words as $word) {
     sleep(1);
     $word = urlencode($word);
-    $url = "https://translate.google.com/translate_tts?ie=UTF-8&tl=$language&client=tw-ob&q=$word";
+    //$url = "https://translate.google.com/translate_tts?ie=UTF-8&tl=$language&client=tw-ob&q=$word";
+    $url = "";
 
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
