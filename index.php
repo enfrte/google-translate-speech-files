@@ -69,4 +69,4 @@ foreach ($new_words as $word) {
 // Append new words to existing words file
 
 $existing_words = array_merge($existing_words, $new_words);
-file_put_contents($language . '_existing.txt', implode(' ', $existing_words));
+file_put_contents($language .'/'. $language . '_existing.txt', implode(' ', $existing_words));
