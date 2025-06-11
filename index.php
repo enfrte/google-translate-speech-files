@@ -31,7 +31,7 @@ WHERE c.language = :language;");
 $stmt->execute([':language' => $language]);
 $latest_words = $stmt->fetchAll(PDO::FETCH_COLUMN);
 $latest_words = implode(' ', $latest_words); // Convert array to string
-$latest_words = str_replace(['...', '.', ',', '!', '?', '"', "'"], '', $latest_words);
+$latest_words = str_replace(['...', '.', ',', '!', '?', '(', ')',  '"', "'"], '', $latest_words);
 $latest_words = mb_strtolower($latest_words, 'UTF-8'); // Convert to lowercase with UTF-8 encoding
 $latest_words = explode(' ', $latest_words);
 $latest_words = array_unique($latest_words); // Remove duplicate words
@@ -41,7 +41,9 @@ $latest_words = array_filter($latest_words, function($word) {
 
 // Load existing words from the file
 
-$existing_words = file_get_contents($language . '/' . $language . '_existing.txt');
+//$existing_words = file_get_contents($language . '/' . $language . '_existing.txt');
+$existing_words_file_path = $this->audioPath . $language . '/' . $language . '_existing.txt';
+$existing_words = file_exists($existing_words_file_path) ? file_get_contents($existing_words_file_path) : '';
 $existing_words = explode(' ', $existing_words) ?? [];
 
 // Remove duplicate words from existing words
